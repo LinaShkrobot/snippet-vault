@@ -183,7 +183,7 @@ Returns `204 No Content` on success, `404` if not found.
 - **Server actions** for mutations instead of client-side `fetch` — fewer round-trips, less code in the form.
 - **Optimistic UI** for delete (remove from list immediately, rollback on error).
 - **Tag picker** instead of a comma-separated text field, with autocomplete from existing tags.
-- **Backend tests** (e2e + unit for the service) — the Nest CLI generated `.spec.ts` files are still placeholders.
+- **Backend tests** (e2e + unit for the service) using `@nestjs/testing` and `mongodb-memory-server`.
 - **Search highlight** on the list page for matched terms.
 - **Atlas + Render/Vercel deploy** with a CI workflow.
 

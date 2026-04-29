@@ -4,6 +4,12 @@ Mini service for storing useful snippets (links / notes / commands) with tags an
 
 Test assignment for Junior FullStack Developer.
 
+## Live demo
+
+- **Frontend (Vercel):** <https://snippet-vault-puce.vercel.app>
+
+> The frontend is permanently deployed on Vercel. The backend runs locally; for the live demo it is exposed to the internet via an `ngrok` tunnel and the frontend's `NEXT_PUBLIC_API_URL` points to that tunnel. If the demo URL is unreachable, the tunnel is offline — clone the repo and follow the [local setup](#local-setup) below to run everything on your machine.
+
 ## Stack
 
 - **Frontend:** Next.js 16 (App Router) + React 19 + TypeScript + Tailwind v4

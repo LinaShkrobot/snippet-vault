@@ -25,7 +25,7 @@ export class SnippetsService {
       filter.$text = { $search: q };
     }
     if (tag) {
-      filter.tags = tag;
+      filter.tags = tag.trim().toLowerCase();
     }
 
     const skip = (page - 1) * limit;
@@ -50,9 +50,7 @@ export class SnippetsService {
   }
 
   async findOne(id: string): Promise<SnippetDocument> {
-    if (!isValidObjectId(id)) {
-      throw new NotFoundException(`Snippet with id "${id}" not found`);
-    }
+    this.assertValidId(id);
     const snippet = await this.snippetModel.findById(id).exec();
     if (!snippet) {
       throw new NotFoundException(`Snippet with id "${id}" not found`);
@@ -61,9 +59,7 @@ export class SnippetsService {
   }
 
   async update(id: string, dto: UpdateSnippetDto): Promise<SnippetDocument> {
-    if (!isValidObjectId(id)) {
-      throw new NotFoundException(`Snippet with id "${id}" not found`);
-    }
+    this.assertValidId(id);
     const snippet = await this.snippetModel
       .findByIdAndUpdate(id, dto, { new: true, runValidators: true })
       .exec();
@@ -74,11 +70,15 @@ export class SnippetsService {
   }
 
   async remove(id: string): Promise<void> {
-    if (!isValidObjectId(id)) {
-      throw new NotFoundException(`Snippet with id "${id}" not found`);
-    }
+    this.assertValidId(id);
     const result = await this.snippetModel.findByIdAndDelete(id).exec();
     if (!result) {
+      throw new NotFoundException(`Snippet with id "${id}" not found`);
+    }
+  }
+
+  private assertValidId(id: string): void {
+    if (!isValidObjectId(id)) {
       throw new NotFoundException(`Snippet with id "${id}" not found`);
     }
   }

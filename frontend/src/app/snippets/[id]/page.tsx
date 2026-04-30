@@ -4,8 +4,6 @@ import { ApiError, getSnippet } from '@/lib/api';
 import DeleteButton from '@/components/DeleteButton';
 import type { Snippet } from '@/lib/types';
 
-export const dynamic = 'force-dynamic';
-
 const TYPE_STYLES: Record<Snippet['type'], string> = {
   link: 'bg-blue-100 text-blue-800',
   note: 'bg-yellow-100 text-yellow-800',

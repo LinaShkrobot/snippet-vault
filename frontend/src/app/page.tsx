@@ -4,8 +4,6 @@ import SnippetCard from '@/components/SnippetCard';
 import SearchBar from '@/components/SearchBar';
 import Pagination from '@/components/Pagination';
 
-export const dynamic = 'force-dynamic';
-
 type SearchParams = {
   q?: string;
   tag?: string;
@@ -18,7 +16,7 @@ export default async function HomePage({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const page = parseInt(params.page ?? '1', 10) || 1;
+  const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1);
 
   const { data, total, totalPages } = await getSnippets({
     q: params.q,

@@ -4,8 +4,6 @@ import { ApiError, getSnippet } from '@/lib/api';
 import SnippetForm from '@/components/SnippetForm';
 import type { Snippet } from '@/lib/types';
 
-export const dynamic = 'force-dynamic';
-
 export default async function EditSnippetPage({
   params,
 }: {

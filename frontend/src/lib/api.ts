@@ -27,7 +27,6 @@ async function request<T>(
     ...init,
     headers: {
       'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': 'true',
       ...(init?.headers ?? {}),
     },
     cache: 'no-store',

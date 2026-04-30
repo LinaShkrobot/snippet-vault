@@ -6,9 +6,10 @@ Test assignment for Junior FullStack Developer.
 
 ## Live demo
 
-- **Frontend (Vercel):** <https://snippet-vault-puce.vercel.app>
+- **App:** <http://46.225.165.9:3002>
+- **API:** <http://46.225.165.9:4000/snippets>
 
-> The frontend is permanently deployed on Vercel. The backend runs locally; for the live demo it is exposed to the internet via an `ngrok` tunnel and the frontend's `NEXT_PUBLIC_API_URL` points to that tunnel. If the demo URL is unreachable, the tunnel is offline — clone the repo and follow the [local setup](#local-setup) below to run everything on your machine.
+> The full stack (MongoDB + NestJS API + Next.js UI) is deployed on a single Linux VPS, managed with `pm2` and a Docker-hosted MongoDB. If the demo is unreachable, follow the [local setup](#local-setup) below to run everything on your machine.
 
 ## Stack
 

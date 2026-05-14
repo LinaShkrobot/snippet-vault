@@ -1,25 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, #fdf4ff 0%, #f5f3ff 50%, #eef2ff 100%);
+  background-attachment: fixed;
+  color: #18181b;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 100vh;
+}
+
+.dark body {
+  background: linear-gradient(180deg, #1e1b2e 0%, #1a1a2e 50%, #1e1e2a 100%);
+  background-attachment: fixed;
+  color: #fafafa;
 }
 
 input,
 textarea,
 select {
-  color: var(--foreground);
+  color: inherit;
+}
+
+::selection {
+  background: #c7d2fe;
+  color: #312e81;
+}
+
+.dark ::selection {
+  background: #4338ca;
+  color: #e0e7ff;
 }

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
+import { Save, X, AlertCircle, Link2, FileText, Terminal } from 'lucide-react';
 import { ApiError, createSnippet, updateSnippet } from '@/lib/api';
 import type { Snippet, SnippetType } from '@/lib/types';
 
@@ -9,7 +10,11 @@ type Props =
   | { mode: 'create'; initial?: undefined }
   | { mode: 'edit'; initial: Snippet };
 
-const TYPES: SnippetType[] = ['link', 'note', 'command'];
+const TYPES: { value: SnippetType; icon: typeof Link2; label: string }[] = [
+  { value: 'link', icon: Link2, label: 'Link' },
+  { value: 'note', icon: FileText, label: 'Note' },
+  { value: 'command', icon: Terminal, label: 'Command' },
+];
 
 function parseTags(input: string): string[] {
   const seen = new Set<string>();
@@ -80,14 +85,17 @@ export default function SnippetForm(props: Props) {
 
   const busy = submitting || isPending;
 
+  const inputBase =
+    'w-full px-3.5 py-2.5 text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500';
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div>
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-xs font-medium text-zinc-600 dark:text-zinc-100 mb-1.5 uppercase tracking-wide"
         >
-          Title <span className="text-red-500">*</span>
+          Title <span className="text-rose-500 normal-case">*</span>
         </label>
         <input
           id="title"
@@ -96,79 +104,83 @@ export default function SnippetForm(props: Props) {
           onChange={(e) => setTitle(e.target.value)}
           required
           maxLength={200}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Give your snippet a clear name..."
+          className={inputBase}
         />
       </div>
 
       <div>
         <label
           htmlFor="content"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-xs font-medium text-zinc-600 dark:text-zinc-100 mb-1.5 uppercase tracking-wide"
         >
-          Content <span className="text-red-500">*</span>
+          Content <span className="text-rose-500 normal-case">*</span>
         </label>
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
-          rows={6}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows={8}
+          placeholder="Paste your code, link, or note..."
+          className={`${inputBase} font-mono resize-y`}
         />
       </div>
 
-      <div className="flex flex-wrap gap-4">
-        <div className="flex-1 min-w-48">
-          <label
-            htmlFor="type"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Type <span className="text-red-500">*</span>
-          </label>
-          <select
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value as SnippetType)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          >
-            {TYPES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex-1 min-w-48">
-          <label
-            htmlFor="tags"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Tags (comma separated)
-          </label>
-          <input
-            id="tags"
-            type="text"
-            value={tagsInput}
-            onChange={(e) => setTagsInput(e.target.value)}
-            placeholder="js, react, tutorial"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      <div>
+        <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-100 mb-1.5 uppercase tracking-wide">
+          Type <span className="text-rose-500 normal-case">*</span>
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          {TYPES.map(({ value, icon: Icon, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setType(value)}
+              className={`inline-flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium rounded-lg border transition-all ${
+                type === value
+                  ? 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-400 ring-1 ring-indigo-200 dark:ring-indigo-800'
+                  : 'bg-zinc-50 dark:bg-zinc-700 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700'
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
+      <div>
+        <label
+          htmlFor="tags"
+          className="block text-xs font-medium text-zinc-600 dark:text-zinc-100 mb-1.5 uppercase tracking-wide"
+        >
+          Tags <span className="normal-case text-zinc-400">(comma separated)</span>
+        </label>
+        <input
+          id="tags"
+          type="text"
+          value={tagsInput}
+          onChange={(e) => setTagsInput(e.target.value)}
+          placeholder="js, react, tutorial"
+          className={inputBase}
+        />
+      </div>
+
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
-          {error}
+        <div className="flex items-start gap-2 p-3 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/30 text-rose-700 dark:text-rose-400 rounded-lg text-sm">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+          <span>{error}</span>
         </div>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 pt-2">
         <button
           type="submit"
           disabled={busy}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 disabled:opacity-50 transition-colors shadow-sm shadow-indigo-500/30"
         >
+          <Save className="w-4 h-4" />
           {busy
             ? 'Saving…'
             : mode === 'create'
@@ -178,8 +190,9 @@ export default function SnippetForm(props: Props) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-zinc-600 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
         >
+          <X className="w-4 h-4" />
           Cancel
         </button>
       </div>

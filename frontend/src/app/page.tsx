@@ -1,8 +1,10 @@
 import Link from 'next/link';
+import { Plus, Sparkles, FileQuestion } from 'lucide-react';
 import { getSnippets } from '@/lib/api';
 import SnippetCard from '@/components/SnippetCard';
 import SearchBar from '@/components/SearchBar';
 import Pagination from '@/components/Pagination';
+import ThemeToggle from '@/components/ThemeToggle';
 
 type SearchParams = {
   q?: string;
@@ -28,44 +30,61 @@ export default async function HomePage({
   const hasFilters = Boolean(params.q || params.tag);
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
-      <header className="flex items-center justify-between mb-6 gap-2">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Snippet Vault</h1>
-          <p className="text-gray-600 text-sm mt-1">
-            {total} snippet{total === 1 ? '' : 's'}
-            {hasFilters ? ' match your filters' : ' stored'}
-          </p>
+    <main className="max-w-4xl mx-auto px-4 py-10 sm:py-12">
+      <header className="flex flex-wrap items-center justify-between mb-8 gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-10 h-10 bg-indigo-600 text-white rounded-xl shadow-sm shadow-indigo-500/30">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+              Snippet Vault
+            </h1>
+            <p className="text-zinc-500 dark:text-zinc-100 text-sm">
+              {total} snippet{total === 1 ? '' : 's'}
+              {hasFilters ? ' match your filters' : ' stored'}
+            </p>
+          </div>
         </div>
-        <Link
-          href="/snippets/new"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 whitespace-nowrap"
-        >
-          + New snippet
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link
+            href="/snippets/new"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors shadow-sm shadow-indigo-500/30"
+          >
+            <Plus className="w-4 h-4" />
+            New snippet
+          </Link>
+        </div>
       </header>
 
-      <section className="mb-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+      <section className="mb-6 p-4 bg-white/95 backdrop-blur-sm dark:bg-zinc-500/60 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-sm">
         <SearchBar />
       </section>
 
       <section>
         {data.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 border border-dashed border-gray-300 rounded-md">
-            <p className="text-lg mb-2">No snippets found.</p>
-            <p className="text-sm">
-              {hasFilters ? (
-                'Try adjusting your filters above.'
-              ) : (
-                <>
-                  Get started by{' '}
-                  <Link href="/snippets/new" className="text-blue-600 underline">
-                    creating your first snippet
-                  </Link>
-                  .
-                </>
-              )}
+          <div className="text-center py-16 px-6 bg-white/95 backdrop-blur-sm dark:bg-zinc-500/60 border border-zinc-200 dark:border-zinc-700 rounded-xl">
+            <div className="inline-flex p-3 bg-zinc-100 dark:bg-zinc-700 rounded-2xl mb-4">
+              <FileQuestion className="w-7 h-7 text-zinc-400" />
+            </div>
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+              No snippets found
+            </h3>
+            <p className="text-sm text-zinc-500 dark:text-zinc-100 max-w-sm mx-auto mb-5">
+              {hasFilters
+                ? 'Try adjusting your search or filters above.'
+                : 'Start building your knowledge base by adding your first snippet.'}
             </p>
+            {!hasFilters && (
+              <Link
+                href="/snippets/new"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Create your first snippet
+              </Link>
+            )}
           </div>
         ) : (
           <ul className="space-y-3">

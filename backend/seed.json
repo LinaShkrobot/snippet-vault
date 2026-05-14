@@ -1,0 +1,67 @@
+[
+  {
+    "title": "Tailwind CSS — Official Docs",
+    "content": "https://tailwindcss.com/docs",
+    "tags": [
+      "tailwind",
+      "css",
+      "docs",
+      "frontend"
+    ],
+    "type": "link",
+    "createdAt": "2026-05-14T19:23:25.844Z",
+    "updatedAt": "2026-05-14T19:23:25.844Z"
+  },
+  {
+    "title": "useDebounce custom hook",
+    "content": "import { useState, useEffect } from 'react';\n\n  export function useDebounce<T>(value: T, delay: number = 500): T {\n    const [debouncedValue, setDebouncedValue] = useState<T>(value);\n\n    useEffect(() => {\n      const timer = setTimeout(() => setDebouncedValue(value), delay);\n      return () => clearTimeout(timer);\n    }, [value, delay]);\n\n    return debouncedValue;\n  }",
+    "tags": [
+      "react",
+      "hooks",
+      "typescript",
+      "performance"
+    ],
+    "type": "note",
+    "createdAt": "2026-05-14T19:24:47.485Z",
+    "updatedAt": "2026-05-14T19:24:47.485Z"
+  },
+  {
+    "title": "Center anything with Flexbox",
+    "content": ".center {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    min-height: 100vh;\n  }",
+    "tags": [
+      "css",
+      "flexbox",
+      "layout",
+      "snippet"
+    ],
+    "type": "note",
+    "createdAt": "2026-05-14T19:25:56.743Z",
+    "updatedAt": "2026-05-14T19:25:56.743Z"
+  },
+  {
+    "title": "Undo last commit (keep changes)",
+    "content": "git reset --soft HEAD~1\n\n  # Then re-stage and commit again:\n  git add .\n  git commit -m \"Updated commit message\"",
+    "tags": [
+      "git",
+      "undo",
+      "version-control"
+    ],
+    "type": "command",
+    "createdAt": "2026-05-14T19:31:29.142Z",
+    "updatedAt": "2026-05-14T19:31:29.142Z"
+  },
+  {
+    "title": "Find and kill process by port",
+    "content": "# Find process using port 3000\n  lsof -i :3000\n\n  # Kill the process\n  kill -9 $(lsof -t -i:3000)\n\n  # One-liner alternative:\n  fuser -k 3000/tcp",
+    "tags": [
+      "bash",
+      "port",
+      "kill",
+      "process",
+      "devops"
+    ],
+    "type": "command",
+    "createdAt": "2026-05-14T19:32:28.039Z",
+    "updatedAt": "2026-05-14T19:32:28.039Z"
+  }
+]
